@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:p="primefaces">
+<h:head>
+    <title>Gestión de Trabajadores de la Salud</title>
+</h:head>
+<h:body>
+    <h1>Gestión de Trabajadores de la Salud</h1>
+
+    <!-- Listado -->
+    <h2>Listado de todos</h2>
+    <h:form id="formListado">
+        <p:dataTable id="listado"
+                     value="#{trabajadorDelaSaludBean.todos}"
+                     var="t"
+                     style="margin-bottom:20px"
+                     paginator="true" rows="5"
+                     paginatorPosition="bottom">
+            <p:column headerText="Matrícula">
+                <h:outputText value="#{t.matricula}" />
+            </p:column>
+            <p:column headerText="Nombre">
+                <h:outputText value="#{t.nombre}" />
+            </p:column>
+            <p:column headerText="Fecha Registro">
+                <h:outputText value="#{t.fechaRegistro}" />
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <hr/>
+
+    <!-- Registro -->
+    <h2>Registrar nuevo trabajador</h2>
+    <h:form id="formRegistro">
+        <p:panelGrid columns="2" columnClasses="label,value" style="margin-bottom:20px">
+            <h:outputLabel value="Matrícula:" for="matricula" />
+            <p:inputText id="matricula" value="#{trabajadorDelaSaludBean.nuevo.matricula}" />
+
+            <h:outputLabel value="Nombre:" for="nombre" />
+            <p:inputText id="nombre" value="#{trabajadorDelaSaludBean.nuevo.nombre}" />
+
+        </p:panelGrid>
+
+        <p:commandButton value="Registrar"
+                         action="#{trabajadorDelaSaludBean.registrar}"
+                         update=":formListado:listado"
+                         process="@form" />
+    </h:form>
+
+    <hr/>
+
+    <!-- Búsqueda -->
+    <h2>Buscar por matrícula</h2>
+    <h:form id="formBusqueda">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="matriculaBusqueda" value="Matrícula:" />
+            <p:inputText id="matriculaBusqueda" value="#{trabajadorDelaSaludBean.matriculaBusqueda}" />
+
+            <!-- AJAX: busca y muestra el resultado -->
+            <p:commandButton value="Buscar"
+                             actionListener="#{trabajadorDelaSaludBean.buscar}"
+                             update="resultadoBusqueda"
+                             process="@form" />
+        </h:panelGrid>
+
+        <h:panelGroup id="resultadoBusqueda">
+            <h:panelGrid columns="2" rendered="#{not empty trabajadorDelaSaludBean.resultadoBusqueda}">
+                <h:outputText value="Nombre:" />
+                <h:outputText value="#{trabajadorDelaSaludBean.resultadoBusqueda.nombre}" />
+                <h:outputText value="Fecha Registro:" />
+                <h:outputText value="#{trabajadorDelaSaludBean.resultadoBusqueda.fechaRegistro}" />
+            </h:panelGrid>
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>
