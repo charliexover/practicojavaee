@@ -2,6 +2,7 @@ com\practico\excepcion\ExcepcionDeNegocio.class
 com\practico\dao\TrabajadorDeLaSaludDAOBean.class
 com\practico\dao\TrabajadorDeLaSaludDAOLocal.class
 com\practico\servicios\TrabajadorDeLaSaludServiceLocal.class
+com\practico\mdb\TrabajadorMDB.class
 com\practico\servicios\TrabajadorDeLaSaludServiceRemote.class
 com\practico\dao\TrabajadorDeLaSaludDAORemote.class
 com\practico\entidad\TrabajadorDeLaSalud.class

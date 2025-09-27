@@ -36,11 +36,10 @@
     <h2>Registrar nuevo trabajador</h2>
     <h:form id="formRegistro">
         <p:panelGrid columns="2" columnClasses="label,value" style="margin-bottom:20px">
-            <h:outputLabel value="Matrícula:" for="matricula" />
-            <p:inputText id="matricula" value="#{trabajadorDelaSaludBean.nuevo.matricula}" />
-
             <h:outputLabel value="Nombre:" for="nombre" />
             <p:inputText id="nombre" value="#{trabajadorDelaSaludBean.nuevo.nombre}" />
+            <h:outputLabel value="Matrícula:" for="matricula" />
+            <p:inputText id="matricula" value="#{trabajadorDelaSaludBean.nuevo.matricula}" />
 
         </p:panelGrid>
 

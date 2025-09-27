@@ -1,20 +1,29 @@
 package com.practico.web;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 import com.practico.entidad.TrabajadorDeLaSalud;
-import com.practico.excepcion.ExcepcionDeNegocio;
 import com.practico.servicios.TrabajadorDeLaSaludServiceLocal;
 
+import jakarta.annotation.Resource;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.JMSContext;
+import jakarta.jms.Queue;
 
 @Named("trabajadorDelaSaludBean")
 @SessionScoped
 public class TrabajadorDelaSaludBean implements Serializable {
+
+    @Resource(lookup = "java:/JmsXA")
+    private ConnectionFactory connectionFactory;
+
+    @Resource(lookup = "java:/jms/queue/queue_alta_trabajador")
+    private Queue queue;
+    
     @EJB
     private TrabajadorDeLaSaludServiceLocal service;
 
@@ -30,12 +39,12 @@ public class TrabajadorDelaSaludBean implements Serializable {
 
     // Registrar
     public String registrar() {
-        nuevo.setFechaRegistro(LocalDate.now());
-        try {
-            service.agregarTrabajador(nuevo);
-        } catch (ExcepcionDeNegocio e) {
-            System.err.println("Error: " + e.getMessage());
-            return null;
+        try (JMSContext context = connectionFactory.createContext()) {
+            String mensaje = nuevo.getNombre() + "|" +
+                             nuevo.getMatricula();
+            context.createProducer().send(queue, mensaje);
+            System.out.println("Mensaje enviado a la cola: " + mensaje);
+        } catch (Exception e) {
         }
         nuevo = new TrabajadorDeLaSalud(); // limpiar formulario
         return null;
